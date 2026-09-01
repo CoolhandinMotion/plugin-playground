@@ -1,0 +1,16 @@
+{
+  "name": "meetup-marketplace",
+  "interface": {
+    "displayName": "Meetup Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "plugin-playground",
+      "source": {
+        "source": "local",
+        "path": "./plugins/plugin-playground"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
