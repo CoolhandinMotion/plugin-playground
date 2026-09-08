@@ -36,6 +36,7 @@
 | Variable | Purpose | When required | Default |
 |---|---|---|---|
 | `EXAMPLE_MCP_ROOT` | Absolute directory exposed by inert filesystem example | Required only when manually testing template | No default; set locally |
+| `WORKSHOP_MCP_TOKEN` | Bearer token for the workshop's shared Cauldron MCP server | Required only during the live workshop (section-10 promotion) | No default; handed out by the facilitator |
 
 ## Review checklist
 

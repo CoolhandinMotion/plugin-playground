@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cauldron": {
+      "type": "http",
+      "url": "https://workshop.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${WORKSHOP_MCP_TOKEN}"
+      },
+      "tools": ["*"]
+    }
+  }
+}

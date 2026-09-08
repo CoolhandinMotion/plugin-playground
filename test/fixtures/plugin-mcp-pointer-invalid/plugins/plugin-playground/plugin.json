@@ -1,0 +1,14 @@
+{
+  "name": "plugin-playground",
+  "description": "Example skills and reviewed MCP configuration patterns for GitHub Copilot CLI.",
+  "version": "0.1.0",
+  "author": {
+    "name": "CoolhandinMotion"
+  },
+  "homepage": "https://github.com/CoolhandinMotion/plugin-playground",
+  "repository": "https://github.com/CoolhandinMotion/plugin-playground",
+  "license": "MIT",
+  "keywords": ["copilot-cli", "skills", "mcp"],
+  "skills": ["skills/"],
+  "mcpServers": "config/other-servers.json"
+}

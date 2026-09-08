@@ -25,6 +25,22 @@ const DANGEROUS_VALUE_PATTERNS = [
 const ENV_REF_PATTERN = /^\$\{([A-Z][A-Z0-9_]*)\}$|^\$([A-Z][A-Z0-9_]*)$/;
 const ENV_EXTRACT_PATTERN = /\$\{([A-Z][A-Z0-9_]*)\}|\$([A-Z][A-Z0-9_]*)/g;
 
+// Any 8+ run of token-ish characters left over once env references are
+// stripped is treated as a literal secret fragment.
+const RESIDUE_TOKEN_PATTERN = /[A-Za-z0-9_.~+\/=-]{8,}/;
+
+/**
+ * A composed value like "Bearer ${WORKSHOP_MCP_TOKEN}" is safe: it contains
+ * at least one env reference and only short scaffolding around it.
+ */
+function isEnvComposedValue(value) {
+  ENV_EXTRACT_PATTERN.lastIndex = 0;
+  if (!ENV_EXTRACT_PATTERN.test(value)) return false;
+  ENV_EXTRACT_PATTERN.lastIndex = 0;
+  const residue = value.replace(ENV_EXTRACT_PATTERN, "");
+  return !RESIDUE_TOKEN_PATTERN.test(residue);
+}
+
 const KNOWN_FLAGS = new Set(["-y", "--yes", "-g", "--global", "--"]);
 
 /**
@@ -295,6 +311,9 @@ export async function validateMcpConfigurations(root, pluginDir) {
             // empty in env/headers is ok
           } else if (ENV_REF_PATTERN.test(value)) {
             // env ref is ok
+          } else if (isEnvComposedValue(value)) {
+            // e.g. "Bearer ${WORKSHOP_MCP_TOKEN}" — the secret still lives
+            // only in the environment
           } else if (value !== "") {
             diagnostics.push(
               diagnostic(

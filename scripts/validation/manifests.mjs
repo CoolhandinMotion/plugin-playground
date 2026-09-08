@@ -249,14 +249,16 @@ export async function validateManifests(root) {
       );
     }
 
-    // mcpServers must be absent
-    if (pMcpServers !== undefined) {
+    // mcpServers: absent, or exactly the sanctioned promotion pointer ".mcp.json"
+    // (the workshop's section-10 ritual). Inline server objects and any other
+    // path stay forbidden — server definitions belong in the reviewed .mcp.json.
+    if (pMcpServers !== undefined && pMcpServers !== ".mcp.json") {
       diagnostics.push(
         diagnostic(
           pluginRelFile,
           "PLUGIN_SHAPE",
-          `${pluginRelFile} must not contain "mcpServers" field.`,
-          `Remove "mcpServers" from ${pluginRelFile}.`,
+          `${pluginRelFile} "mcpServers" must be absent or the string ".mcp.json".`,
+          `Use "mcpServers": ".mcp.json" for the reviewed promotion, or remove the field.`,
         ),
       );
     }

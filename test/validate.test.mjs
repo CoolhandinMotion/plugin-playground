@@ -53,6 +53,7 @@ const manifestCases = [
   ["malformed-plugin", "JSON_PARSE"],
   ["plugin-shape", "PLUGIN_SHAPE"],
   ["plugin-activates-mcp", "PLUGIN_SHAPE"],
+  ["plugin-mcp-pointer-invalid", "PLUGIN_SHAPE"],
   ["identifier-format", "IDENTIFIER_FORMAT"],
   ["plugin-identity", "PLUGIN_IDENTITY"],
   ["plugin-source", "PLUGIN_SOURCE"],
@@ -157,6 +158,7 @@ const mcpCases = [
   ["mcp-unpinned-package", "MCP_PACKAGE_PIN"],
   ["mcp-inline-secret-env", "MCP_INLINE_SECRET"],
   ["mcp-inline-secret-header", "MCP_INLINE_SECRET"],
+  ["mcp-inline-secret-composed", "MCP_INLINE_SECRET"],
   ["mcp-http-shape", "MCP_SHAPE"],
 ];
 
@@ -179,6 +181,22 @@ test("mcp: valid fixture extracts environment variables and emits no mcp diagnos
       result.diagnostics.some(({ rule }) => rule.startsWith("MCP_")),
       false,
       `Unexpected MCP diagnostics: ${JSON.stringify(result.diagnostics.filter((d) => d.rule.startsWith("MCP_")))}`,
+    );
+  }));
+
+// --- Section-10 promotion ritual ---
+
+test("promotion: the sanctioned section-10 ritual passes every rule", () =>
+  withFixture("promotion-ritual", async (root) => {
+    const result = await validateRepository(root);
+    assert.deepEqual(
+      result.diagnostics,
+      [],
+      `Promotion ritual must validate cleanly, got: ${JSON.stringify(result.diagnostics)}`,
+    );
+    assert.ok(
+      result.mcpEnvironmentVariables.includes("WORKSHOP_MCP_TOKEN"),
+      "WORKSHOP_MCP_TOKEN must be extracted from the promoted config",
     );
   }));
 
@@ -433,6 +451,7 @@ test("rule catalog: all stable rules are covered by invalid-fixture tests", asyn
     "malformed-plugin",
     "plugin-shape",
     "plugin-activates-mcp",
+    "plugin-mcp-pointer-invalid",
     "identifier-format",
     "plugin-identity",
     "plugin-source",
@@ -450,6 +469,7 @@ test("rule catalog: all stable rules are covered by invalid-fixture tests", asyn
     "mcp-unpinned-package",
     "mcp-inline-secret-env",
     "mcp-inline-secret-header",
+    "mcp-inline-secret-composed",
     "mcp-http-shape",
     "missing-required-file",
     "mcp-undocumented-env",
