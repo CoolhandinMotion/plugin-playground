@@ -1,0 +1,16 @@
+{
+  "name": "plugin-playground",
+  "interface": {
+    "displayName": "Plugin Playground"
+  },
+  "plugins": [
+    {
+      "name": "plugin-playground",
+      "source": {
+        "source": "local",
+        "path": "./plugins/plugin-playground"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

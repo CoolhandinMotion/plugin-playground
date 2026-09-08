@@ -3,6 +3,10 @@ export const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 export const SUPPORTED_MCP_TRANSPORTS = new Set(["local", "stdio", "http", "sse"]);
 export const REQUIRED_FILES = [
   ".github/plugin/marketplace.json",
+  ".claude-plugin/marketplace.json",
+  ".agents/plugins/marketplace.json",
+  "plugins/plugin-playground/.claude-plugin/plugin.json",
+  "plugins/plugin-playground/.codex-plugin/plugin.json",
   ".github/workflows/validate.yml",
   "plugins/plugin-playground/plugin.json",
   "plugins/plugin-playground/skills/example-skill/SKILL.md",

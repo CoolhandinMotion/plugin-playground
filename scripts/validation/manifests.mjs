@@ -25,6 +25,12 @@ export async function validateManifests(root) {
   );
   checkedFiles++;
 
+  // A broken marketplace must not mask plugin.json/skills/MCP validation, so
+  // on upstream failure we fall through with entry = null and validate
+  // plugin.json at the conventional location.
+  let entry = null;
+  let marketplaceValid = false;
+
   if (marketplaceError) {
     diagnostics.push(
       diagnostic(
@@ -34,10 +40,10 @@ export async function validateManifests(root) {
         `Ensure ${MARKETPLACE_FILE} is valid JSON.`,
       ),
     );
-    return { marketplace, plugin, diagnostics, checkedFiles };
+  } else {
+    marketplace = marketplaceData;
+    marketplaceValid = true;
   }
-
-  marketplace = marketplaceData;
 
   // Shape: name, owner.name, plugins array
   const marketplaceName =
@@ -60,7 +66,7 @@ export async function validateManifests(root) {
       ? marketplace.plugins
       : null;
 
-  if (marketplaceName === null || ownerName === null || plugins === null) {
+  if (marketplaceValid && (marketplaceName === null || ownerName === null || plugins === null)) {
     diagnostics.push(
       diagnostic(
         MARKETPLACE_FILE,
@@ -69,11 +75,10 @@ export async function validateManifests(root) {
         `Add the required top-level fields to ${MARKETPLACE_FILE}.`,
       ),
     );
-    return { marketplace, plugin, diagnostics, checkedFiles };
   }
 
   // Identifier format: marketplace name
-  if (!KEBAB_CASE.test(marketplaceName)) {
+  if (marketplaceName !== null && !KEBAB_CASE.test(marketplaceName)) {
     diagnostics.push(
       diagnostic(
         MARKETPLACE_FILE,
@@ -85,7 +90,7 @@ export async function validateManifests(root) {
   }
 
   // Exactly one plugin
-  if (plugins.length !== 1) {
+  if (plugins !== null && plugins.length !== 1) {
     diagnostics.push(
       diagnostic(
         MARKETPLACE_FILE,
@@ -94,16 +99,16 @@ export async function validateManifests(root) {
         `Ensure exactly one plugin entry is listed in ${MARKETPLACE_FILE}.`,
       ),
     );
-    return { marketplace, plugin, diagnostics, checkedFiles };
+  } else if (plugins !== null) {
+    entry = plugins[0];
   }
-
-  const entry = plugins[0];
 
   // Plugin entry must have strict === true
   if (
-    entry == null ||
-    typeof entry !== "object" ||
-    entry.strict !== true
+    plugins !== null &&
+    (entry == null ||
+      typeof entry !== "object" ||
+      entry.strict !== true)
   ) {
     diagnostics.push(
       diagnostic(
@@ -165,7 +170,7 @@ export async function validateManifests(root) {
         resolvedPluginDir = resolved;
       }
     }
-  } else {
+  } else if (entry != null && typeof entry === "object") {
     diagnostics.push(
       diagnostic(
         MARKETPLACE_FILE,
@@ -177,7 +182,12 @@ export async function validateManifests(root) {
   }
 
   // --- plugin.json ---
-  if (resolvedPluginDir !== null) {
+  // Even when the marketplace side failed, validate plugin.json at the
+  // conventional location so one upstream error cannot hide downstream ones.
+  if (resolvedPluginDir === null) {
+    resolvedPluginDir = resolve(root, "plugins/plugin-playground");
+  }
+  {
     const pluginRelFile = relative(root, resolve(resolvedPluginDir, "plugin.json"));
     const pluginAbsFile = resolve(resolvedPluginDir, "plugin.json");
     const { data: pluginData, error: pluginError } = await readJson(pluginAbsFile, pluginRelFile);

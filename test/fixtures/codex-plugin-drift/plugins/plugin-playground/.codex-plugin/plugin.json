@@ -1,0 +1,11 @@
+{
+  "name": "plugin-playground",
+  "description": "Example skills and reviewed MCP configuration patterns for coding-agent workshops.",
+  "version": "9.9.9",
+  "author": {
+    "name": "CoolhandinMotion"
+  },
+  "homepage": "https://github.com/CoolhandinMotion/plugin-playground",
+  "repository": "https://github.com/CoolhandinMotion/plugin-playground",
+  "license": "MIT"
+}

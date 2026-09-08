@@ -71,6 +71,37 @@ for (const [fixture, rule] of manifestCases) {
     }));
 }
 
+// --- Claude / Codex dialect manifest cases ---
+
+const dialectCases = [
+  ["claude-marketplace-drift", "VERSION_MATCH"],
+  ["claude-plugin-drift", "PLUGIN_IDENTITY"],
+  ["codex-marketplace-source", "PLUGIN_SOURCE"],
+  ["codex-plugin-drift", "VERSION_MATCH"],
+  ["dialect-manifest-malformed", "JSON_PARSE"],
+  ["dialect-manifest-missing", "REQUIRED_FILE"],
+];
+
+for (const [fixture, rule] of dialectCases) {
+  test(`dialect: ${fixture} emits ${rule}`, () =>
+    withFixture(fixture, async (root) => {
+      const result = await validateRepository(root);
+      assert.ok(
+        result.diagnostics.some((value) => value.rule === rule),
+        `Expected diagnostic rule "${rule}" but got: ${JSON.stringify(result.diagnostics.map((d) => d.rule))}`,
+      );
+    }));
+}
+
+test("masking: a broken marketplace does not hide downstream skill/MCP errors", () =>
+  withFixture("masking-upstream-error", async (root) => {
+    const result = await validateRepository(root);
+    const rules = result.diagnostics.map((d) => d.rule);
+    assert.ok(rules.includes("JSON_PARSE"), `Expected JSON_PARSE, got: ${JSON.stringify(rules)}`);
+    assert.ok(rules.includes("MCP_INLINE_SECRET"), `Expected MCP_INLINE_SECRET, got: ${JSON.stringify(rules)}`);
+    assert.equal(result.skillCount, 1, "skills must still be validated when the marketplace is broken");
+  }));
+
 test("valid fixture has no manifest diagnostics", () =>
   withFixture("valid", async (root) => {
     const result = await validateRepository(root);
