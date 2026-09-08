@@ -94,7 +94,6 @@ observe the response carefully.
 Reference: to refresh an installed plugin from its marketplace source, open
 the `/plugins` view, update (or remove and reinstall) **plugin-playground**
 from the `meetup-marketplace` entry, then **restart Codex**.
-<!-- PREFLIGHT: confirm the exact update gesture in the current Codex build (update button vs remove+reinstall) before printing PDFs -->
 
 After updating, invoke the skill again as in section 6.
 
@@ -193,7 +192,6 @@ in the next step.
 **Step 3 — activate it.** Update the plugin as in section 8 (so the new
 config is picked up) and restart Codex. The `cauldron` server should now
 appear among available tools.
-<!-- PREFLIGHT: verify plugin-root .mcp.json auto-load + env-var expansion end-to-end in the current Codex build; record the known-good version here before printing PDFs; confirm the step-2 JSON is accepted verbatim by this client, including the "tools" field -->
 
 **Step 4 — say hello.** Pick a display name for yourself (any silly name is
 fine — it appears on the shared screen). Then ask Codex:

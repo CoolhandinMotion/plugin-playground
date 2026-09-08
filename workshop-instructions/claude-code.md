@@ -212,7 +212,6 @@ Claude Code detects the project-level `.mcp.json` and asks you to approve the
 
 Known-good version: this flow was battle-tested end-to-end with **Claude
 Code 2.1.234** (2026-09-05), with the step-2 JSON exactly as shown above.
-<!-- PREFLIGHT: re-run the preflight close to workshop day and update the known-good version above -->
 
 **Step 4 — say hello.** Pick a display name for yourself (any silly name is
 fine — it appears on the shared screen). Then ask Claude:
