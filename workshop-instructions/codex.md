@@ -184,9 +184,11 @@ What each field means:
   connect time. The file names the variable; it never contains the secret.
 - `"tools": ["*"]` — allow every tool this server offers.
 
-The same JSON body works on all three workshop agents — what differs per
-agent is only *where* the file lives and *how* it gets activated, which is
-why the guides differ only in the next step.
+The same structure works on all three workshop agents, minus per-client
+dialect edges (Claude Code, for example, rejects the `"tools"` field, so
+its guide omits it). What otherwise differs per agent is only *where* the
+file lives and *how* it gets activated, which is why the guides differ only
+in the next step.
 
 **Step 3 — activate it.** Update the plugin as in section 8 (so the new
 config is picked up) and restart Codex. The `cauldron` server should now

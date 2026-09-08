@@ -200,9 +200,11 @@ What each field means:
   connect time. The file names the variable; it never contains the secret.
 - `"tools": ["*"]` — allow every tool this server offers.
 
-The same JSON body works on all three workshop agents — what differs per
-agent is only *where* the file lives and *how* it gets activated, which is
-why the guides differ only in the next step.
+The same structure works on all three workshop agents, minus per-client
+dialect edges (Claude Code, for example, rejects the `"tools"` field, so
+its guide omits it). What otherwise differs per agent is only *where* the
+file lives and *how* it gets activated, which is why the guides differ only
+in the next step.
 
 **Step 3 — activate it.** Add this line to
 `plugins/plugin-playground/plugin.json` (inside the top-level object):
@@ -220,7 +222,11 @@ copilot mcp list
 ```
 
 `cauldron` should now appear in the MCP list.
-<!-- PREFLIGHT: verify exact Copilot CLI known-good version and paste it here before printing PDFs; confirm the step-2 JSON is accepted verbatim by this client, including the "tools" field -->
+
+Known-good version: this flow was battle-tested end-to-end with **GitHub
+Copilot CLI 1.0.83** (2026-09-05), with the step-2 JSON exactly as shown
+above, `"tools": ["*"]` included.
+<!-- PREFLIGHT: re-run the preflight close to workshop day and update the known-good version above -->
 
 **Step 4 — say hello.** Pick a display name for yourself (any silly name is
 fine — it appears on the shared screen). Then ask Copilot:
@@ -259,3 +265,5 @@ from now), so there's nothing secret left on your machine — but unsetting
 | `npm run check` fails | Read the error; it names the file and rule. Ask your agent to fix it and re-run. |
 | `cauldron` missing from `copilot mcp list` | Check `WORKSHOP_MCP_TOKEN` is set in *this* terminal, `.mcp.json` is at the plugin root, `plugin.json` has the `mcpServers` line, and you ran `copilot plugin update plugin-playground`. |
 | Cauldron calls rejected (401) | Token typo, or the env var isn't visible to the process. Re-set it and restart `copilot` from the same terminal. |
+| First prompt can't see any `cauldron` tools even though `copilot mcp list` shows the server | Known flake: send the same prompt again — the second attempt reliably finds them. Debug only if the retry also fails. |
+| `Access is denied (os error 5)` on `copilot plugin install`/`update` | Corporate endpoint security intercepting the Copilot process — not a repo or permissions problem. Pair up with a neighbour whose install works and follow along there. |

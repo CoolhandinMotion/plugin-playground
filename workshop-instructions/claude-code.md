@@ -174,8 +174,7 @@ from the facilitator):
       "url": "<server URL from facilitator>/mcp",
       "headers": {
         "Authorization": "Bearer ${WORKSHOP_MCP_TOKEN}"
-      },
-      "tools": ["*"]
+      }
     }
   }
 }
@@ -194,11 +193,13 @@ What each field means:
   the standard `Authorization: Bearer <token>` credential.
 - `"${WORKSHOP_MCP_TOKEN}"` — expanded from your environment variable at
   connect time. The file names the variable; it never contains the secret.
-- `"tools": ["*"]` — allow every tool this server offers.
 
-The same JSON body works on all three workshop agents — what differs per
-agent is only *where* the file lives and *how* it gets activated, which is
-why the guides differ only in the next step.
+The same structure works on all three workshop agents, minus per-client
+dialect edges: the other two guides also include a `"tools": ["*"]`
+allow-list field, which Claude Code rejects — it silently skips the whole
+server entry — so keep this file exactly as shown, with no `tools` field.
+What otherwise differs per agent is only *where* the file lives and *how*
+it gets activated, which is why the guides differ only in the next step.
 
 **Step 3 — activate it.** Start a fresh session from the repository root:
 
@@ -208,7 +209,10 @@ claude
 
 Claude Code detects the project-level `.mcp.json` and asks you to approve the
 `cauldron` server — approve it, then run `/mcp` to confirm it's connected.
-<!-- PREFLIGHT: verify exact Claude Code known-good version and paste it here before printing PDFs; confirm the step-2 JSON is accepted verbatim by this client, including the "tools" field -->
+
+Known-good version: this flow was battle-tested end-to-end with **Claude
+Code 2.1.234** (2026-09-05), with the step-2 JSON exactly as shown above.
+<!-- PREFLIGHT: re-run the preflight close to workshop day and update the known-good version above -->
 
 **Step 4 — say hello.** Pick a display name for yourself (any silly name is
 fine — it appears on the shared screen). Then ask Claude:
@@ -242,5 +246,5 @@ from now), so there's nothing secret left on your machine — but unsetting
 | Marketplace registration fails | Run the command from the repository root (the folder with `README.md`). |
 | Skill response looks stale after an edit | Installs are cached copies — see section 8. |
 | `npm run check` fails | Read the error; it names the file and rule. Ask your agent to fix it and re-run. |
-| `cauldron` missing from `/mcp` | Check `.mcp.json` is at the repo root, `WORKSHOP_MCP_TOKEN` is set in *this* terminal, and you started `claude` from the repo root and approved the server prompt. |
+| `cauldron` missing from `/mcp` | Check `.mcp.json` is at the repo root, `WORKSHOP_MCP_TOKEN` is set in *this* terminal, and you started `claude` from the repo root and approved the server prompt. Still missing? Run `claude mcp list` — it shows *why* a server was skipped (a config typo skips the entry silently, e.g. an added `"tools"` field). |
 | Cauldron calls rejected (401) | Token typo, or the env var isn't visible to the process. Re-set it and start a fresh `claude` from the same terminal. |
