@@ -15,6 +15,5 @@ export const REQUIRED_FILES = [
   "CONTRIBUTING.md",
   "LICENSE",
   "README.md",
-  "SECURITY.md",
   "package.json",
 ];
