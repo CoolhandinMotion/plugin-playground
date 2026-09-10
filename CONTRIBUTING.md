@@ -47,14 +47,13 @@
 - [ ] Exact versions: all packages pinned to exact semver.
 - [ ] No inline secrets: all credentials use `${VARIABLE}` references.
 - [ ] Tests: positive and negative fixtures pass.
-- [ ] Docs: README, CONTRIBUTING, and CHANGELOG updated.
+- [ ] Docs: README and CONTRIBUTING updated.
 
 ## Release process
 
 1. Update version in `package.json` and `plugins/plugin-playground/plugin.json`.
 2. Update version in `.github/plugin/marketplace.json`.
-3. Add a dated section to `CHANGELOG.md`.
-4. Run `npm run check`.
-5. Commit, tag with the version, and push.
+3. Run `npm run check`.
+4. Commit, tag with the version, and push.
 
 No automation creates tags, pushes, deploys, or publishes.
