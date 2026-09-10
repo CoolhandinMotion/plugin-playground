@@ -215,14 +215,6 @@ test("missing required file fails closed", () =>
     assert.ok(result.diagnostics.some(({ rule }) => rule === "REQUIRED_FILE"));
   }));
 
-test("every MCP environment variable must be documented", () =>
-  withFixture("mcp-undocumented-env", async (root) => {
-    const result = await validateRepository(root);
-    assert.ok(
-      result.diagnostics.some(({ rule }) => rule === "MCP_ENV_DOCUMENTATION"),
-    );
-  }));
-
 // --- CI workflow contract tests ---
 
 import { readFileSync } from "node:fs";
@@ -472,7 +464,6 @@ test("rule catalog: all stable rules are covered by invalid-fixture tests", asyn
     "mcp-inline-secret-composed",
     "mcp-http-shape",
     "missing-required-file",
-    "mcp-undocumented-env",
   ];
   for (const fixture of invalidFixtures) {
     await withFixture(fixture, async (root) => {
@@ -485,7 +476,6 @@ test("rule catalog: all stable rules are covered by invalid-fixture tests", asyn
     "JSON_PARSE",
     "MARKETPLACE_SHAPE",
     "MCP_DUPLICATE",
-    "MCP_ENV_DOCUMENTATION",
     "MCP_INLINE_SECRET",
     "MCP_PACKAGE_PIN",
     "MCP_SHAPE",

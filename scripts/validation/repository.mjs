@@ -39,7 +39,7 @@ export async function validateRepository(root) {
   checkedFiles += mcp.checkedFiles;
   mcpEnvironmentVariables = mcp.environmentVariables;
 
-  const docs = await validateDocumentation(root, mcpEnvironmentVariables);
+  const docs = await validateDocumentation(root);
   diagnostics.push(...docs.diagnostics);
   checkedFiles += docs.checkedFiles;
 

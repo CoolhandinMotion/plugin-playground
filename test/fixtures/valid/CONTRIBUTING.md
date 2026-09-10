@@ -1,4 +1,0 @@
-# Contributing
-
-EXAMPLE_MCP_ROOT
-WORKSHOP_MCP_TOKEN

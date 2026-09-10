@@ -11,8 +11,6 @@ export const REQUIRED_FILES = [
   "plugins/plugin-playground/plugin.json",
   "plugins/plugin-playground/skills/example-skill/SKILL.md",
   "plugins/plugin-playground/examples/mcp/.mcp.json",
-  "CONTRIBUTING.md",
   "LICENSE",
-  "README.md",
   "package.json",
 ];

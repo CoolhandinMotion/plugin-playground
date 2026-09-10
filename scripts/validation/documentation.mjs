@@ -1,16 +1,16 @@
 import { resolve } from "node:path";
-import { pathExists, readText } from "./fs.mjs";
+import { pathExists } from "./fs.mjs";
 import { diagnostic } from "./diagnostic.mjs";
 import { REQUIRED_FILES } from "./constants.mjs";
 
 /**
- * Validate required files exist and MCP environment variables are documented.
+ * Validate required files exist. Prose (Markdown) files are deliberately
+ * not validated: only SKILL.md files are, via the skills validator.
  *
  * @param {string} root - absolute repository root
- * @param {string[]} variables - MCP environment variable names to check
  * @returns {Promise<{ diagnostics: import('./diagnostic.mjs').Diagnostic[], checkedFiles: number }>}
  */
-export async function validateDocumentation(root, variables) {
+export async function validateDocumentation(root) {
   const diagnostics = [];
   let checkedFiles = 0;
 
@@ -25,29 +25,6 @@ export async function validateDocumentation(root, variables) {
           "REQUIRED_FILE",
           `Required file "${rel}" is missing.`,
           `Create ${rel} in the repository root.`,
-        ),
-      );
-    }
-  }
-
-  const docFiles = ["CONTRIBUTING.md", "README.md"];
-  const docTexts = [];
-  for (const name of docFiles) {
-    const content = await readText(resolve(root, name));
-    if (content != null) {
-      docTexts.push(content);
-    }
-  }
-  const combined = docTexts.join("\n");
-
-  for (const varName of variables) {
-    if (!combined.includes(varName)) {
-      diagnostics.push(
-        diagnostic(
-          "CONTRIBUTING.md",
-          "MCP_ENV_DOCUMENTATION",
-          `MCP environment variable "${varName}" is not documented.`,
-          `Add ${varName} to the "MCP environment variables" section in CONTRIBUTING.md.`,
         ),
       );
     }
