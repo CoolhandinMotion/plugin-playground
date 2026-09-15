@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "matcher": "Bash",
+        "powershell": "& \"${PLUGIN_ROOT}/scripts/block-git-commit.ps1\"",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

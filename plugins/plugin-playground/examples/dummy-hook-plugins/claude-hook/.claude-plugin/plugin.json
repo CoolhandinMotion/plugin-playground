@@ -1,0 +1,11 @@
+{
+  "name": "plugin-playground-claude",
+  "description": "Educational Claude plugin: working skills and hooks, plus a template/ folder with copy-paste starting points for students.",
+  "version": "0.1.0",
+  "author": {
+    "name": "CoolhandinMotion"
+  },
+  "homepage": "https://github.com/CoolhandinMotion/plugin-playground",
+  "repository": "https://github.com/CoolhandinMotion/plugin-playground",
+  "license": "MIT"
+}
