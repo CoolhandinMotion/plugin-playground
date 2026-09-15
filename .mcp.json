@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "cauldron": {
+      "type": "http",
+      "url": "https://your-agent-your-rules-workshop.blueplant-af9685aa.northeurope.azurecontainerapps.io/mcp",
+      "headers": {
+        "Authorization": "Bearer jBch4gBYitvzeDAWBjbA"
+      }
+    }
+  }
+}
